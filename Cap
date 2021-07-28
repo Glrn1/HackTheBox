@@ -1,0 +1,17 @@
+Depois de procurar diretorios encontramos o data
+
+Procuramos novamente por diretorios encontramos varios com numeros
+
+Ao olhar o diretorio de numero 0 encontramos o login e senha do ftp
+
+nathan:Buck3tH4TF0RM3!
+
+que incluse é a mesma senha do usuario podendo fazer login na maquina (ssh)
+
+usamos o python para pegar root
+
+usamos o comando  python3 -c 'import os; os.system("/bin/sh")'                                                                                                                                                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                                                                                                                                                                                  
+agora usamos o python3 -c 'import os; os.setuid(0); os.system("/bin/sh")'
+
+E agora somos root
