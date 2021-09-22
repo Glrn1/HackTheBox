@@ -1,0 +1,61 @@
+Adicionar "forge.htb" no hosts
+
+Acessar o site e ir em uploads>URL
+
+Ao procurar por subdominios temos 1: admin.forge.htb
+
+Ao acessar só tem a mensagem "só pode ser acessador por admin"
+
+Pelo upload de url do site podemos fazer requisições para a propria maquina
+
+Passamos isso no upload de url: http://ADMIN.FORGE.HTB
+
+Ele ira nos retornar um link, copiamos ele e usamos curl na nossa maquina
+
+Vemos um diretorio "/announcements"
+
+Agora fazemos a mesma requisição mas adicionando o novo diretorio: http://ADMIN.FORGE.HTB/announcements
+
+Damos mais um curl no link que recebemos e vemos que tem um servidor ftp rodando na maquina
+
+E temos as credenciais dele: user:heightofsecurity123!
+
+http://ADMIN.FORGE.HTB/upload?u=ftp://user:heightofsecurity123!@FORGE.HTB
+
+Com isso podemos ler a pasta do usuario na maquina
+
+Agora podemos pegar a ssh key da maquina. Passamos isso na url do site: http://ADMIN.FORGE.HTB/upload?u=ftp://user:heightofsecurity123!@FORGE.HTB/.ssh/id_rsa
+
+E pegamos a id_rsa
+
+Salvamos e usamos chmod 600 id_rsa
+
+Logamos na maquina e pegamos a flag de user
+
+sudo -l
+(ALL : ALL) NOPASSWD: /usr/bin/python3 /opt/remote-manage.py
+
+damos um cat no arquivo e vemos que ele tem uma senha no codigo: secretadminpassword
+
+Agora para pegar root precisamos abrir um novo terminal e logar na maquina
+
+Rodamos o codigo do sudo-l
+
+sudo /usr/bin/python3 /opt/remote-manage.py
+Listening on localhost:41782
+
+no novo terminal que abrimos usamos :nc 127.0.0.1 41782 
+
+quando o codigo rodar podemos facilmente quebrar ele com apenas uma '
+
+Ao enviar quebramos o codigo e estamos com o python aberto
+
+(Refrencia: https://www.geeksforgeeks.org/python-os-system-method/)
+
+Usamos o import os
+
+E usamos os.system("id")
+
+E somos root
+
+os.system("cat /root/root.txt")
